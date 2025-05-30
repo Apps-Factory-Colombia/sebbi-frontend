@@ -1,0 +1,549 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: #ffffff;
+  --foreground: #232323;
+  --card: #ffffff;
+  --card-foreground: #232323;
+  --popover: #ffffff;
+  --popover-foreground: #232323;
+  --primary: #353535;
+  --primary-foreground: #fafafa;
+  --secondary: #f7f7f7;
+  --secondary-foreground: #353535;
+  --muted: #f7f7f7;
+  --muted-foreground: #8a8a8a;
+  --accent: #f7f7f7;
+  --accent-foreground: #353535;
+  --destructive: #ffb4b4;
+  --border: #ebebeb;
+  --input: #ebebeb;
+  --ring: #b3b3b3;
+  --chart-1: #a3e635;
+  --chart-2: #38bdf8;
+  --chart-3: #818cf8;
+  --chart-4: #fbbf24;
+  --chart-5: #f472b6;
+  --sidebar: #fafafa;
+  --sidebar-foreground: #232323;
+  --sidebar-primary: #353535;
+  --sidebar-primary-foreground: #fafafa;
+  --sidebar-accent: #f7f7f7;
+  --sidebar-accent-foreground: #353535;
+  --sidebar-border: #ebebeb;
+  --sidebar-ring: #b3b3b3;
+}
+
+.dark {
+  --background: #232323;
+  --foreground: #fafafa;
+  --card: #353535;
+  --card-foreground: #fafafa;
+  --popover: #353535;
+  --popover-foreground: #fafafa;
+  --primary: #ebebeb;
+  --primary-foreground: #353535;
+  --secondary: #434343;
+  --secondary-foreground: #fafafa;
+  --muted: #434343;
+  --muted-foreground: #b3b3b3;
+  --accent: #434343;
+  --accent-foreground: #fafafa;
+  --destructive: #ff6b6b;
+  --border: rgba(255, 255, 255, 0.10);
+  --input: rgba(255, 255, 255, 0.15);
+  --ring: #8a8a8a;
+  --chart-1: #6366f1;
+  --chart-2: #38bdf8;
+  --chart-3: #f472b6;
+  --chart-4: #818cf8;
+  --chart-5: #fbbf24;
+  --sidebar: #353535;
+  --sidebar-foreground: #fafafa;
+  --sidebar-primary: #6366f1;
+  --sidebar-primary-foreground: #fafafa;
+  --sidebar-accent: #434343;
+  --sidebar-accent-foreground: #fafafa;
+  --sidebar-border: rgba(255, 255, 255, 0.10);
+  --sidebar-ring: #8a8a8a;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.tiptap {
+  :first-child {
+    margin-top: 0;
+  }
+
+  /* List styles */
+  ul,
+  ol {
+    padding: 0 1rem;
+    margin: 1.25rem 1rem 1.25rem 0.4rem;
+
+    li p {
+      margin-top: 0.25em;
+      margin-bottom: 0.25em;
+    }
+  }
+
+  table {
+    border-collapse: collapse;
+    margin: 0;
+    overflow: hidden;
+    table-layout: fixed;
+    width: 100%;
+
+    td,
+    th {
+      border: 1px solid var(--gray-3);
+      box-sizing: border-box;
+      min-width: 1em;
+      padding: 6px 8px;
+      position: relative;
+      vertical-align: top;
+
+      >* {
+        margin-bottom: 0;
+      }
+    }
+
+    th {
+      background-color: var(--gray-1);
+      font-weight: bold;
+      text-align: left;
+    }
+
+    .selectedCell:after {
+      background: var(--gray-2);
+      content: "";
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      pointer-events: none;
+      position: absolute;
+      z-index: 2;
+    }
+
+    .column-resize-handle {
+      background-color: var(--purple);
+      bottom: -2px;
+      pointer-events: none;
+      position: absolute;
+      right: -2px;
+      top: 0;
+      width: 4px;
+    }
+  }
+
+  .tableWrapper {
+    margin: 1.5rem 0;
+    overflow-x: auto;
+  }
+
+  &.resize-cursor {
+    cursor: ew-resize;
+    cursor: col-resize;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    line-height: 1.1;
+    margin-top: 2.5rem;
+    text-wrap: pretty;
+  }
+
+  h1,
+  h2 {
+    margin-top: 3.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+  }
+
+  h4,
+  h5,
+  h6 {
+    font-size: 1rem;
+  }
+}
+
+/* Estilos para el placeholder de Tiptap */
+.tiptap p.is-node-empty::before,
+.tiptap h1.is-node-empty::before,
+.tiptap h2.is-node-empty::before,
+.tiptap h3.is-node-empty::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #adb5bd;
+  /* Un gris suave para el placeholder */
+  pointer-events: none;
+  /* Para que no interfiera con el click */
+  height: 0;
+  /* No ocupa espacio vertical */
+  font-style: normal;
+}
+
+/* Placeholder específico para el H1 principal "Sin título" */
+.tiptap h1.is-node-empty::before {
+  color: #ced4da;
+  /* Un gris aún más suave para el título principal */
+  font-weight: 600;
+  /* O el peso que uses para H1 normal */
+  font-size: 2.25rem;
+  /* Ajusta al tamaño de tu H1 */
+  line-height: 2.5rem;
+  /* Ajusta al line-height de tu H1 */
+}
+
+/* Placeholder para párrafos que sugiere comandos */
+.tiptap p.is-node-empty::before {
+  font-weight: normal;
+  /* Si quieres añadir un ícono de + antes del placeholder de párrafo: */
+  /* content: '⊕ ' attr(data-placeholder); */
+  /* Usando un carácter similar a plus */
+}
+
+/* Estilos base para el contenido del editor de Tiptap */
+.tiptap {
+  /* Define aquí estilos base para p, h1, h2, h3, ul, ol, blockquote, etc. */
+  /* Esto asegura que el contenido se vea bien incluso sin clases prose */
+}
+
+.tiptap h1 {
+  @apply text-4xl font-semibold text-neutral-800 mb-6;
+  /* Ejemplo de estilo para H1 */
+}
+
+.tiptap p {
+  @apply text-base text-neutral-700 leading-relaxed mb-4;
+  /* Ejemplo de estilo para Párrafos */
+}
+
+/* ... más estilos para otros elementos ... */
+
+/* Estilos para el menú flotante */
+.bubble-menu {
+  display: flex;
+  background-color: white;
+  padding: 0.2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 2px 8px rgba(0, 0, 0, 0.1);
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.2s, opacity 0.2s;
+}
+
+.bubble-menu.is-active {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Estilos para el editor */
+.ProseMirror {
+  min-height: 100px;
+  padding: 0.5rem 0;
+}
+
+.ProseMirror:focus {
+  outline: none;
+}
+
+.ProseMirror>*+* {
+  margin-top: 0.75em;
+}
+
+.ProseMirror ul,
+.ProseMirror ol {
+  padding: 0 1rem;
+}
+
+.ProseMirror h1,
+.ProseMirror h2,
+.ProseMirror h3,
+.ProseMirror h4,
+.ProseMirror h5,
+.ProseMirror h6 {
+  line-height: 1.1;
+}
+
+.ProseMirror code {
+  background-color: rgba(97, 97, 97, 0.1);
+  color: #616161;
+}
+
+.ProseMirror pre {
+  background: #0D0D0D;
+  color: #FFF;
+  font-family: 'JetBrainsMono', monospace;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.ProseMirror pre code {
+  color: inherit;
+  padding: 0;
+  background: none;
+  font-size: 0.8rem;
+}
+
+.ProseMirror img {
+  max-width: 100%;
+  height: auto;
+}
+
+.ProseMirror blockquote {
+  padding-left: 1rem;
+  border-left: 2px solid rgba(13, 13, 13, 0.1);
+}
+
+.ProseMirror hr {
+  border: none;
+  border-top: 2px solid rgba(13, 13, 13, 0.1);
+  margin: 2rem 0;
+}
+
+/* Placeholder */
+.ProseMirror p.is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* En tu archivo global.css o donde tengas tus estilos */
+.ProseMirror h1.is-empty::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #9ca3af;
+  pointer-events: none;
+  height: 0;
+}
+
+/* --- INICIO: ESTILOS PARA CORREGIR ANCHO Y POSICIÓN DEL SIDEBAR DE LA LIBRERÍA --- */
+
+[data-slot="sidebar-container"] {
+  /* Forzar el ancho deseado */
+  width: 180px !important;
+  min-width: 180px !important;
+  max-width: 180px !important;
+
+  /* MUY IMPORTANTE: Cambiar la posición para que fluya con el layout flex */
+  position: static !important;
+  /* o relative, si static no funciona como se espera */
+  /* z-index: auto !important; /* Asegurar que no tenga un z-index conflictivo */
+  /* Eliminar transformaciones que puedan afectar el layout si las hubiera */
+  /* transform: none !important; */
+}
+
+[data-slot="sidebar-gap"] {
+  width: 0 !important;
+}
+
+/*
+  Si la librería tiene un modo "icono" y quieres que ese modo también
+  tenga un ancho específico (y no el calculado por --sidebar-width-icon),
+  puedes añadir:
+*/
+/*
+.group-data-\[collapsible=icon\] [data-slot="sidebar-container"],
+.group-data-\[collapsible=icon\] {
+  /* width: 60px !important; /* Ejemplo para modo icono */
+/* min-width: 60px !important; */
+/*}
+*/
+
+
+/* --- FIN: ESTILOS PARA CORREGIR ANCHO Y POSICIÓN DEL SIDEBAR DE LA LIBRERÍA --- */
+
+.ghost-autocomplete {
+  color: #a3a3a3;
+  opacity: 0.7;
+  pointer-events: none;
+  font-style: italic;
+  /* Para que no afecte el salto de línea ni el cursor */
+  user-select: none;
+  background: none !important;
+}
+
+/* Estilos para el texto fantasma en línea */
+.ghost-text-inline {
+  color: #adb5bd;
+  /* Un gris claro, similar a un placeholder */
+  opacity: 0.7;
+  pointer-events: none;
+  /* No interfiere con el cursor o la selección */
+  user-select: none;
+  /* No se puede seleccionar */
+  padding-left: 0.1ch;
+  /* Pequeño espacio para que no se superponga con el cursor */
+}
+
+/* Estilos para el texto fantasma */
+.ghost-text {
+  opacity: 0.5;
+  color: #666;
+  pointer-events: none;
+  user-select: none;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  white-space: pre-wrap;
+  position: absolute;
+  z-index: 1;
+  background: transparent;
+}
+
+/* Asegurarse que el texto ghost no afecte el layout */
+.ProseMirror .ghost-text {
+  display: inline;
+  white-space: pre;
+  pointer-events: none;
+}
+
+.ghost-text-suggestion {
+  color: #a0aec0;
+  /* Gris, ej: text-gray-500 de Tailwind */
+  opacity: 0.7;
+  pointer-events: none;
+  /* Para que no interfiera con el clic */
+  user-select: none;
+  /* Para que no se pueda seleccionar */
+  font-style: italic;
+  margin-left: 1px;
+  /* Pequeño ajuste para que no se solape con el cursor */
+}
+
+/* Estilos para Tippy.js si es necesario (generalmente ya vienen bien) */
+.tippy-box {
+  background-color: white;
+  border-radius: 0.375rem;
+  /* rounded-md */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  /* shadow-lg */
+}
+
+.tippy-content {
+  padding: 0px;
+  /* El padding ya está en nuestro SuggestionAcceptPopup */
+}
+
+.tiptap ul,
+.ProseMirror ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.tiptap ol,
+.ProseMirror ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.tiptap li,
+.ProseMirror li {
+  margin-bottom: 0.25rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+/* Animación para el botón de aceptar sugerencia */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out forwards;
+}
