@@ -381,6 +381,41 @@ export default function LibrarySidebar() {
         return pdfs.filter(pdf => !assignedPdfIds.has(pdf.pdf_id));
     }, [pdfs, folderTree]);
 
+    // Detectar logout y limpiar carpetas
+    React.useEffect(() => {
+        const checkLogout = () => {
+            const currentUserEmail = localStorage.getItem('userEmail');
+            // Si no hay userEmail pero tenemos carpetas, significa que se hizo logout
+            if (!currentUserEmail && folderTree.folders.size > 0) {
+                console.log("Logout detectado, limpiando carpetas...");
+                setFolderTree(new FolderTree());
+                setPdfs([]);
+            }
+        };
+
+        // Verificar inmediatamente
+        checkLogout();
+
+        // Escuchar cambios en localStorage
+        const handleStorageChange = (e) => {
+            if (e.key === 'userEmail' && !e.newValue) {
+                console.log("Logout detectado via storage event, limpiando carpetas...");
+                setFolderTree(new FolderTree());
+                setPdfs([]);
+            }
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+
+        // También verificar periodicamente por si el cambio viene del mismo tab
+        const intervalId = setInterval(checkLogout, 1000);
+
+        return () => {
+            window.removeEventListener('storage', handleStorageChange);
+            clearInterval(intervalId);
+        };
+    }, [folderTree.folders.size]);
+
     // Guardar carpetas en localStorage cuando cambien
     useEffect(() => {
         if (typeof window === 'undefined') return;

@@ -39,8 +39,8 @@ const mockEditor = {
     }
 }
 
-// Mock environment variable
-process.env.NEXT_PUBLIC_API_URL = 'http://localhost:8000'
+
+process.env.NEXT_PUBLIC_API_URL = 'https://api-sebbi.vercel.app/'
 
 describe('EditorStore', () => {
     beforeEach(() => {
@@ -200,7 +200,7 @@ describe('EditorStore', () => {
 
     describe('Integración con API', () => {
         it('debe usar la URL de API del entorno', () => {
-            expect(process.env.NEXT_PUBLIC_API_URL).toBe('http://localhost:8000')
+            expect(process.env.NEXT_PUBLIC_API_URL).toBe('https://api-sebbi.vercel.app/')
         })
     })
 

@@ -11,7 +11,7 @@ export const AutocompleteExtension = Extension.create({
         return {
             delay: 2000, // Delay antes de mostrar sugerencia
             suggestions: {}, // Objeto con las sugerencias estáticas (fallback)
-            apiUrl: 'http://localhost:8000/api/v1/documents/autocomplete', // URL de la API
+            apiUrl: 'https://api-sebbi.vercel.app/api/v1/documents/autocomplete',
             useAI: true, // Usar IA en lugar de sugerencias estáticas
             minTextLength: 3, // Mínima longitud de texto para activar IA
             onSuggestionShow: () => { },

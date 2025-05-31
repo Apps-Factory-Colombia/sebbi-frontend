@@ -13,7 +13,8 @@ import {
     Monitor,
     Sun,
     Moon,
-    Zap
+    Zap,
+    LogOut
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -31,23 +32,91 @@ import {
     SidebarSeparator,
     SidebarTrigger
 } from "@/components/ui/sidebar"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useUIStore } from "@/stores/uiStore";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function SidebarComponent() {
     const [uploadProgress, setUploadProgress] = React.useState(10);
+    const [userName, setUserName] = React.useState("");
+    const [userEmail, setUserEmail] = React.useState("");
     const openLibrarySidebar = useUIStore((state) => state.openLibrarySidebar);
     const openDocumentsSidebar = useUIStore((state) => state.openDocumentsSidebar);
     const toggleChatSidebar = useUIStore((state) => state.toggleChatSidebar);
+    const router = useRouter();
+
+    // Obtener información del usuario al cargar
+    React.useEffect(() => {
+        if (typeof window !== "undefined") {
+            const storedUserName = localStorage.getItem("userName") || "";
+            const storedUserEmail = localStorage.getItem("userEmail") || "";
+            setUserName(storedUserName);
+            setUserEmail(storedUserEmail);
+        }
+    }, []);
+
+    // Función para manejar el logout
+    const handleLogout = () => {
+        // Limpiar localStorage
+        localStorage.removeItem("userEmail");
+        localStorage.removeItem("userName");
+        localStorage.removeItem("libraryFolderStructure"); // Limpiar carpetas de la librería
+
+        // Mostrar mensaje de confirmación
+        toast.success("Sesión cerrada correctamente");
+
+        // Redirigir al login
+        router.push("/sign-in");
+    };
+
+    // Generar iniciales del nombre
+    const getInitials = (name) => {
+        if (!name) return "U";
+        return name
+            .split(" ")
+            .map(word => word.charAt(0))
+            .join("")
+            .toUpperCase()
+            .slice(0, 2);
+    };
 
     return (
         <Sidebar className="border-r border-gray-200 bg-white w-[180px] shadow-sm overflow-hidden">
             <SidebarTrigger className="absolute top-2 right-2" />
             <SidebarHeader className="p-2 flex items-center gap-2 border-b border-gray-100">
-                <Avatar className="h-8 w-8">
-                    <AvatarImage src="/avatar.png" />
-                    <AvatarFallback className="bg-gray-100 text-gray-800 text-sm">AM</AvatarFallback>
-                </Avatar>
-                <span className="font-medium text-gray-900 text-sm">Alfonso Murillo</span>
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <div className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 rounded-md p-1 transition-colors">
+                            <Avatar className="h-8 w-8">
+                                <AvatarImage src="/avatar.png" />
+                                <AvatarFallback className="bg-gray-100 text-gray-800 text-sm">
+                                    {getInitials(userName)}
+                                </AvatarFallback>
+                            </Avatar>
+                            <span className="font-medium text-gray-900 text-sm">
+                                {userName || "Usuario"}
+                            </span>
+                        </div>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start" className="w-48">
+                        <DropdownMenuItem className="text-xs text-gray-500" disabled>
+                            {userEmail}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                            onClick={handleLogout}
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                        >
+                            <LogOut className="h-4 w-4 mr-2" />
+                            Cerrar Sesión
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
             </SidebarHeader>
 
             <SidebarContent className="py-2">

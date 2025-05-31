@@ -25,7 +25,7 @@ import { Badge } from "@/components/ui/badge";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
-// Asumimos que tu backend FastAPI corre en http://localhost:8000
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 const PDF_API_BASE = `${API_URL}/api/v1/pdf`;
 

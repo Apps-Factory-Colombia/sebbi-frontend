@@ -44,6 +44,7 @@ export default function Register() {
       const data = await response.json();
 
       localStorage.setItem("userEmail", email);
+      localStorage.setItem("userName", name);
 
       toast.success("Registro exitoso", {
         description: "¡Su cuenta ha sido creada! Ahora puede iniciar sesión.",

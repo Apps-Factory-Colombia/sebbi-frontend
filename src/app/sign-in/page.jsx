@@ -43,6 +43,16 @@ export default function SignIn() {
             const data = await response.json();
 
             localStorage.setItem("userEmail", email);
+            // Guardar información adicional del usuario si viene en la respuesta
+            if (data.user?.name) {
+                localStorage.setItem("userName", data.user.name);
+            } else if (data.name) {
+                localStorage.setItem("userName", data.name);
+            } else {
+                // Si no viene el nombre, usar la parte local del email como fallback
+                const nameFromEmail = email.split('@')[0];
+                localStorage.setItem("userName", nameFromEmail);
+            }
 
             toast.success("Inicio de sesión exitoso", {
                 description: "Redirigiendo al dashboard...",
