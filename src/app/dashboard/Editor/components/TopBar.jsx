@@ -315,8 +315,6 @@ export default function TopBar({ documentTitle, setDocumentTitle }) {
                     {showLoadingState ? 'Actualizando...' : isSaving ? 'Guardando...' : hasUnsavedChanges ? 'Sin guardar' : 'Guardado'}
                 </div>
 
-                <ShareButton />
-
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="icon" className="text-neutral-500 hover:text-neutral-800 h-8 w-8" title="Exportar documento">

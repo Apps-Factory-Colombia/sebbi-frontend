@@ -71,11 +71,21 @@ export default function NotionStyleEditor() {
         const loadFirstDocument = async () => {
             if (!currentDocument && userEmail) {
                 try {
-                    const response = await fetch(`${API_URL}/api/v1/documents?email=${encodeURIComponent(userEmail)}`);
+                    // Usar la nueva ruta /documents/list con GET
+                    const response = await fetch(`${API_URL}/api/v1/documents/list?email=${encodeURIComponent(userEmail)}`, {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Accept": "application/json",
+                        },
+                    });
+
                     if (!response.ok) {
                         throw new Error("Error al obtener documentos");
                     }
-                    const documents = await response.json();
+                    const data = await response.json();
+                    // La respuesta ahora tiene formato { documents: [...], count: number }
+                    const documents = data.documents || data || [];
                     if (documents.length > 0) {
                         await loadDocument(documents[0].id);
                     }

@@ -909,9 +909,7 @@ export default function LibrarySidebar() {
                     >
                         Collections
                     </Button>
-                    <Button variant="outline" size="sm" className="ml-auto flex items-center gap-1 text-xs px-3 py-1 h-auto">
-                        <FilterIcon size={12} /> Filter
-                    </Button>
+
                 </div>
             </div>
 

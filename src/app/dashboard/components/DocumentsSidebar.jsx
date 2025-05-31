@@ -86,18 +86,32 @@ export default function DocumentsSidebar() {
     }, [searchQuery, documents]);
 
     const fetchDocuments = async () => {
+        console.log(`Fetching documents for user: ${userEmail}`)
         try {
             setIsLoading(true);
-            const response = await fetch(`${API_URL}/api/v1/documents?email=${encodeURIComponent(userEmail)}`);
+
+            // Usar la nueva ruta /documents/list con GET
+            const response = await fetch(`${API_URL}/api/v1/documents/list?email=${encodeURIComponent(userEmail)}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                },
+            });
 
             if (!response.ok) {
-                throw new Error("Error al obtener documentos");
+                const errorText = await response.text();
+                console.error("API Error:", response.status, errorText);
+                throw new Error(`Error al obtener documentos: ${response.status} ${response.statusText}`);
             }
 
             const data = await response.json();
 
+            // La respuesta ahora tiene formato { documents: [...], count: number }
+            const documents = data.documents || data || [];
+
             // Si no hay documentos, crear uno por defecto
-            if (data.length === 0) {
+            if (documents.length === 0) {
                 const defaultTitle = "Mi primer documento";
                 const defaultDoc = await createDefaultDocument(defaultTitle);
                 if (defaultDoc) {
@@ -107,12 +121,12 @@ export default function DocumentsSidebar() {
                     await handleDocumentClick(defaultDoc);
                 }
             } else {
-                setDocuments(data);
-                setFilteredDocuments(data);
+                setDocuments(documents);
+                setFilteredDocuments(documents);
             }
         } catch (error) {
             console.error("Error al cargar documentos:", error);
-            toast.error("Error al cargar documentos");
+            toast.error("Error al cargar documentos: " + error.message);
         } finally {
             setIsLoading(false);
         }
@@ -126,7 +140,8 @@ export default function DocumentsSidebar() {
                 blocks: `<h1>${title}</h1><p>¡Bienvenido a tu primer documento!</p>`
             };
 
-            const response = await fetch(`${API_URL}/api/v1/documents`, {
+            // Usar la nueva ruta /documents/create
+            const response = await fetch(`${API_URL}/api/v1/documents/create`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -164,7 +179,8 @@ export default function DocumentsSidebar() {
                 blocks: `<h1>${newDocumentTitle}</h1><p></p>`
             };
 
-            const response = await fetch(`${API_URL}/api/v1/documents`, {
+            // Usar la nueva ruta /documents/create
+            const response = await fetch(`${API_URL}/api/v1/documents/create`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
